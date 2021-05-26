@@ -1,0 +1,26 @@
+GET http://localhost:3000/jobs/
+
+###
+
+POST   http://localhost:3000/jobs/
+Content-Type: application/json
+
+{
+    "companyName": "Tencent",
+    "jobRole": "Senior Game Developer",
+    "skills": "Unity, DotNet",
+    "jobType": "Permanent",
+    "experience": "12-15 Years",
+    "datePosted": "05/24/2021",
+    "selected": false,
+    "applied" : false
+}
+
+###
+
+DELETE  http://localhost:3000/jobs/60abcdc1a05de6446cb60716
+Content-Type: application/json
+
+{
+    "companyName": "Google"
+}

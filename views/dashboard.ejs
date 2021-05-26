@@ -1,0 +1,205 @@
+
+<!-- ########################### Candidate ############################################ -->
+
+<% if (user.role == "candidate") { %>
+
+    <div class="d-flex justify-content-between ">
+        <div>
+            <h1 class="mt-4">Dashboard</h1>
+            <p class="lead mb-3">Welcome <%= user.name %>
+            </p>
+        </div>
+    
+        <div class="d-flex justify-content-end align-items-center">
+            <a href="#" class="btn btn-secondary" style="margin-right: 10px;">Applied</a>
+            <a href="/users/logout" class="btn btn-secondary">Logout</a>
+        </div>
+    </div>
+
+    <!-- <h5> <%= user.role %>
+    </h5> -->
+
+    <table class="table table-hover">
+        <tr class="table-info">
+            <th>Company Name</th>
+            <th>Job Role</th>
+            <th>Skills</th>
+            <th>Job Type</th>
+            <th>Experience</th>
+            <th>Date of Post</th>
+        </tr>
+        <% newJobItems.forEach((item)=>{ %>
+            <tr>
+                <td>
+                    <%= item.companyName %>
+                </td>
+                <td>
+                    <%= item.jobRole %>
+                </td>
+                <td>
+                    <%= item.skills %>
+                </td>
+                <td>
+                    <%= item.jobType %>
+                </td>
+                <td>
+                    <%= item.experience %>
+                </td>
+                <td>
+                    <%= item.datePosted %>
+                </td>
+                <td>
+                    <button class="btn btn-light">
+                            Apply
+                    </button>
+                </td>
+            </tr>
+            <% }) %>
+    </table>
+
+<!-- ########################### Employer ############################################ -->
+
+    <% } else { %>
+
+        <div class="d-flex justify-content-between ">
+            <div>
+                <h1 class="mt-4">Dashboard</h1>
+                <p class="lead mb-3">Welcome <%= user.name %>
+                </p>
+            </div>
+        
+            <div class="d-flex justify-content-end align-items-center">
+                <!-- <a href="/employer" class="btn btn-secondary" style="margin-right: 10px;">Create Job</a> -->
+                <a href="/users/logout" class="btn btn-secondary">Logout</a>
+            </div>
+        </div>
+
+        <!-- <h1> <%= user.role %>
+        </h1> -->
+
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#pendingJob">Pending Jobs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " data-toggle="tab" href="#createJob">Create Job</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " data-toggle="tab" href="#">Disabled</a>
+            </li>
+        </ul>
+
+        <!-- ###################### Employer Pending Job Tab ############################### -->
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade" id="pendingJob">
+               
+                <table class="table table-hover">
+                    <tr class="table-info">
+                        <th>Company Name</th>
+                        <th>Job Role</th>
+                        <th>Skills</th>
+                        <th>Job Type</th>
+                        <th>Experience</th>
+                        <th>Date of Post</th>
+                    </tr>
+                    <% newJobItems.forEach((item)=>{ %>
+
+<!--  -->
+                        <% if (JSON.stringify(user._id) === JSON.stringify(item.creator)) { %>
+                                <tr>
+                                    <td>
+                                        <%= item.companyName %>
+                                    </td>
+                                    <td>
+                                        <%= item.jobRole %>
+                                    </td>
+                                    <td>
+                                        <%= item.skills %>
+                                    </td>
+                                    <td>
+                                        <%= item.jobType %>
+                                    </td>
+                                    <td>
+                                        <%= item.experience %>
+                                    </td>
+                                    <td>
+                                        <%= item.datePosted %>
+                                    </td>
+                                    <td>
+                                        <% if (JSON.stringify(item.selected) == "false") { %>
+                                        <button class="btn btn-warning">
+                                            Pending
+                                        </button>
+                                        <% } else { %>
+                                            <button class="btn btn-success">
+                                                Closed
+                                            </button>
+                                            <% } %>
+
+                                            <!-- Job Delete Form -->
+                                            <form action="/employer/post/delete" method="POST">
+                                            <input type="hidden" id="itemId" name="itemId" value="<%= item._id %>">
+                                            <button type="submit" class="btn btn-danger" style="margin: 10dp;"
+                                            data-toggle="tooltip" data-placement="right" title="Delete">
+                                                X
+                                            </button>
+                                            </form>
+                                            <!-- Job Delete Form -->
+
+                                    </td>
+                                </tr>
+                            <% } else { %>
+                                    
+                                <% } %>
+<!--  -->
+
+                        <% }) %>
+                </table>
+
+            </div>
+
+
+
+<!-- ###################### Employer Create Job Tab ############################### -->
+
+            <div class="tab-pane fade " id="createJob">
+                <form class = "col-md-9" action="/employer/post" method="POST">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="companyName" class="form-label mt-4">Company Name</label>
+                            <input type="" class="form-control" id="companyName" name="companyName" aria-describedby="companyNameHelp"
+                                placeholder="Enter Company Name">
+                            <small id="companyNameHelp" class="form-text text-muted">Enter the name of recruiter Company</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="jobRole" class="form-label mt-4">Job Role</label>
+                            <input type="" class="form-control" id="jobRole" name="jobRole" aria-describedby="jobRoleHelp"
+                                placeholder="Enter Job Role">
+                            <small id="jobRoleHelp" class="form-text text-muted">Enter the designation offered to the candidate</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="skills" class="form-label mt-4">Skills Required</label>
+                            <textarea class="form-control" id="skills" name="skills" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="jobType" class="form-label mt-4">Job Type</label>
+                            <select class="form-select" id="jobType" name="jobType">
+                                <option>Permanent</option>
+                                <option>Part-Time</option>
+                                <option>Internship</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience" class="form-label mt-4">Experience Required</label>
+                            <input type="" class="form-control" id="experience" name="experience" aria-describedby="experienceHelp"
+                                placeholder="Experience Required">
+                            <small id="experienceHelp" class="form-text text-muted">Enter the experience required for the role</small>
+                        </div>
+                        <input type="hidden" id="userId" name="userId" value="<%= user._id %>">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+        <% } %>

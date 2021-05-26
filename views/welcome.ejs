@@ -1,0 +1,31 @@
+
+<!-- ########################################################################## -->
+
+<br>
+<table class="table table-hover">
+  <tr class="table-info">
+    <th>Company Name</th>
+    <th>Job Role</th>
+    <th>Skills</th>
+    <th>Job Type</th>
+    <th>Experience</th>
+    <th>Date of Post</th>
+  </tr>
+  <% newJobItems.forEach((item)=>{ %>
+  <tr >
+    <td><%= item.companyName %></td>
+    <td><%= item.jobRole %></td>
+    <td><%= item.skills %></td>
+    <td> <%= item.jobType %> </td>
+    <td> <%= item.experience %> </td>
+    <td> <%= item.datePosted %> </td>
+    <td>
+      <button class="btn btn-light">
+        <a href="/signup">
+          Apply
+        </a>
+      </button>
+    </td>
+  </tr>
+  <% }) %>
+</table>
