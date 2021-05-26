@@ -11,7 +11,7 @@
         </div>
     
         <div class="d-flex justify-content-end align-items-center">
-            <a href="#" class="btn btn-secondary" style="margin-right: 10px;">Applied</a>
+            <!-- <a href="#" class="btn btn-secondary" style="margin-right: 10px;">Applied</a> -->
             <a href="/users/logout" class="btn btn-secondary">Logout</a>
         </div>
     </div>
@@ -19,7 +19,151 @@
     <!-- <h5> <%= user.role %>
     </h5> -->
 
-    <table class="table table-hover">
+    <!-- ###################### Candidate Open Job Tab ############################### -->
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#openJobs">Open Jobs</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#appliedJob">Applied Job</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#">Disabled</a>
+        </li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade" id="openJobs">
+    
+            <table class="table table-hover">
+                <tr class="table-info">
+                    <th>Company Name</th>
+                    <th>Job Role</th>
+                    <th>Skills</th>
+                    <th>Job Type</th>
+                    <th>Experience</th>
+                    <th>Date of Post</th>
+                </tr>
+                <% newJobItems.forEach((item)=>{ %>
+    
+                    <!--  -->
+                    <% if (JSON.stringify(item.selected) == "false" && JSON.stringify(user._id) != JSON.stringify(item.applicant)) { %>
+                        <tr>
+                            <td>
+                                <%= item.companyName %>
+                            </td>
+                            <td>
+                                <%= item.jobRole %>
+                            </td>
+                            <td>
+                                <%= item.skills %>
+                            </td>
+                            <td>
+                                <%= item.jobType %>
+                            </td>
+                            <td>
+                                <%= item.experience %>
+                            </td>
+                            <td>
+                                <%= item.datePosted %>
+                            </td>
+                            <td>
+                                            <!-- Job Application Form -->
+                                            <form action="/employer/application" method="POST">
+                                                <input type="hidden" id="itemIdApp" name="itemIdApp" value="<%= item._id %>">
+                                                <input type="hidden" id="userIdApp" name="userIdApp" value="<%= user._id %>">
+                                                <button type="submit" class="btn btn-info" style="margin: 10dp;"
+                                                    data-toggle="tooltip" data-placement="right" title="Apply">
+                                                    Apply
+                                                </button>
+                                            </form>
+                                            <!-- Job Application Form -->
+    
+                            </td>
+                        </tr>
+                        <% } else { %>
+    
+                            <% } %>
+                                <!--  -->
+    
+                                <% }) %>
+            </table>
+    
+        </div>
+    
+    
+    
+        <!-- ###################### Candidate Applied Job Tab ############################### -->
+    
+        <div class="tab-pane fade " id="appliedJob">
+            <table class="table table-hover">
+                <tr class="table-info">
+                    <th>Company Name</th>
+                    <th>Job Role</th>
+                    <th>Skills</th>
+                    <th>Job Type</th>
+                    <th>Experience</th>
+                    <th>Date of Post</th>
+                </tr>
+                <% newJobItems.forEach((item)=>{ %>
+            
+                    <!--  -->
+                    <% if (JSON.stringify(item.selected)=="false" && JSON.stringify(user._id) === JSON.stringify(item.applicant)) { %>
+                        <tr>
+                            <td>
+                                <%= item.companyName %>
+                            </td>
+                            <td>
+                                <%= item.jobRole %>
+                            </td>
+                            <td>
+                                <%= item.skills %>
+                            </td>
+                            <td>
+                                <%= item.jobType %>
+                            </td>
+                            <td>
+                                <%= item.experience %>
+                            </td>
+                            <td>
+                                <%= item.datePosted %>
+                            </td>
+                            <td>
+                                <% if (JSON.stringify(item.selected)=="false" ) { %>
+                                    <button class="btn btn-warning">
+                                        Pending
+                                    </button>
+                                    <% } else { %>
+                                        <button class="btn btn-success">
+                                            Closed
+                                        </button>
+                                        <% } %>
+            
+                                            <!-- Job Application Delete Form -->
+                                            <form action="/employer/application/delete" method="POST">
+                                                <input type="hidden" id="itemIdAppDel" name="itemIdAppDel" value="<%= item._id %>">
+                                                <input type="hidden" id="userIdAppDel" name="userIdAppDel" value="<%= user._id %>">
+                                                <button type="submit" class="btn btn-danger" style="margin: 10dp;"
+                                                    data-toggle="tooltip" data-placement="right" title="Delete">
+                                                    X
+                                                </button>
+                                            </form>
+                                            <!-- Job Application Delete Form -->
+            
+                            </td>
+                        </tr>
+                        <% } else { %>
+            
+                            <% } %>
+                                <!--  -->
+            
+                                <% }) %>
+            </table>
+        </div>
+    </div>
+
+    <!-- <table class="table table-hover">
         <tr class="table-info">
             <th>Company Name</th>
             <th>Job Role</th>
@@ -55,7 +199,7 @@
                 </td>
             </tr>
             <% }) %>
-    </table>
+    </table> -->
 
 <!-- ########################### Employer ############################################ -->
 
@@ -76,6 +220,8 @@
 
         <!-- <h1> <%= user.role %>
         </h1> -->
+
+<!-- ###################### Employer Tab Starts ############################### -->
 
         <ul class="nav nav-tabs">
             <li class="nav-item">

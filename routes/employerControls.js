@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const fetch = require('node-fetch');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const Job = require('../models/Jobs')
 
@@ -35,21 +36,72 @@ router.post('/post', ensureAuthenticated, async (req, res) => {
 
 // Deleting One Job
 router.post('/post/delete', ensureAuthenticated, async (req, res) => {
-  let job
-  console.log(req.body.itemId)
-  try {
-    job = Job.findById(req.body.itemId)
-    console.log(job)
-    await res.job.remove()
-    res.redirect('/dashboard')
-    res.json({ message: 'Deleted Job' })
-  } catch (err) {
-    res.status(500).json({ message: err.message })
-  }
+
+    const id = req.body.itemId
+    Job.findByIdAndRemove(id, (err) => {
+        if (err) {
+      console.log(err);
+    } else {
+      console.log("Item deleted succesfully");
+    }
+    });
+    res.redirect("/dashboard");
+
 })
 
 
 
 // ############################## Candidate Control Routes ##############################################
+
+
+// Updating One Application
+router.post('/application', ensureAuthenticated , async (req, res) => {
+
+    const idJob = req.body.itemIdApp
+    const idApplicant = req.body.userIdApp
+
+    const filter = {_id : idJob}
+    const update = {applicant : idApplicant}
+
+    let updatedEntry = await Job.findOneAndUpdate(filter, update, { new: true}, function(err, updatedEntry){
+    if(err){
+        console.log("Something wrong when updating data!");
+    }
+    console.log(updatedEntry);
+    res.redirect("/dashboard");
+    });
+})
+
+
+// Deleting One Application
+router.post('/application/delete', ensureAuthenticated, async (req, res) => {
+
+    const idJob = req.body.itemIdAppDel
+    const idApplicant = req.body.userIdAppDel
+
+    const filter = {_id : idJob}
+    const update = {applicant : undefined}
+
+    let updatedEntry = await Job.findOneAndUpdate(filter, update, { new: true}, function(err, updatedEntry){
+    if(err){
+        console.log("Something wrong when updating data!");
+    }
+    console.log(updatedEntry);
+    res.redirect("/dashboard");
+    });
+
+//     const id = req.body.itemId
+//     Job.findByIdAndRemove(id, (err) => {
+//         if (err) {
+//       console.log(err);
+//     } else {
+//       console.log("Item deleted succesfully");
+//     }
+//     });
+//     res.redirect("/dashboard");
+
+})
+
+
 
 module.exports = router;
