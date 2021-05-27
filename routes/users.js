@@ -16,9 +16,9 @@ router.get('/register', forwardAuthenticated, (req, res) => res.render('register
 
 // Register
 router.post('/register', (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   const { role, name, email, password, password2 } = req.body;
-  console.log(role, name, email,password);
+  // console.log(role, name, email,password);
   let errors = [];
 
   if (!role || !name || !email || !password || !password2) {

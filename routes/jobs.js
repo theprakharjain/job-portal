@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-
+const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const Job = require('../models/Jobs')
 
 // Getting all
-router.get('/', async (req, res) => {
+router.get('/', ensureAuthenticated, async (req, res) => {
 
   try {
     const Jobs = await Job.find()
@@ -16,12 +16,12 @@ router.get('/', async (req, res) => {
 })
 
 // Getting One
-router.get('/:id', getJob, (req, res) => {
+router.get('/:id', ensureAuthenticated, getJob, (req, res) => {
   res.json(res.job)
 })
 
 // Creating one
-router.post('/', async (req, res) => {
+router.post('/', ensureAuthenticated, async (req, res) => {
   const job = new Job({
     companyName: req.body.companyName,
     jobRole: req.body.jobRole,
@@ -41,7 +41,7 @@ router.post('/', async (req, res) => {
 })
 
 // Updating One
-router.patch('/:id', getJob, async (req, res) => {
+router.patch('/:id', ensureAuthenticated, getJob, async (req, res) => {
   if (req.body.companyName != null) {
     res.job.companyName = req.body.companyName
   }
@@ -75,7 +75,7 @@ router.patch('/:id', getJob, async (req, res) => {
 })
 
 // Deleting One
-router.delete('/:id', getJob, async (req, res) => {
+router.delete('/:id', ensureAuthenticated, getJob, async (req, res) => {
   try {
     await res.job.remove()
     res.json({ message: 'Deleted Job' })

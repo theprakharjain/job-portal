@@ -61,7 +61,7 @@ router.post('/post/select', ensureAuthenticated , async (req, res) => {
     const update = {applicant : idApplicant}
 
     // pushing the name of candidate into selected candidated
-    let updatedEntrySelected = await Job.findOneAndUpdate(filter,{$push: {selected : idApplicant}}, { new: true}, function(err, updatedEntrySelected){
+    let updatedEntrySelected = await Job.findOneAndUpdate(filter,{$addToSet: {selected : idApplicant}}, { new: true}, function(err, updatedEntrySelected){
     if(err){
         console.log("Something wrong when updating data!");
     }
@@ -121,7 +121,7 @@ router.post('/post/close', ensureAuthenticated , async (req, res) => {
 // ############################## Candidate Control Routes ##############################################
 
 
-// Updating One Application
+// Updating One Application - Applying to the Job
 router.post('/application', ensureAuthenticated , async (req, res) => {
 
     const idJob = req.body.itemIdApp
@@ -139,7 +139,7 @@ router.post('/application', ensureAuthenticated , async (req, res) => {
 })
 
 
-// Deleting One Application
+// Deleting One Application - Removing the Job applied
 router.post('/application/delete', ensureAuthenticated, async (req, res) => {
 
     const idJob = req.body.itemIdAppDel

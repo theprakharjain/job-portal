@@ -28,12 +28,15 @@
         <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#appliedJob">Applied Job</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#">Disabled</a>
-        </li>
+        </li> -->
     </ul>
 
     <div id="myTabContent" class="tab-content">
+
+        <!-- ###################### Candidate Jobs Available Tab ############################### -->
+
         <div class="tab-pane fade active show" id="openJobs">
     
             <table class="table table-hover">
@@ -67,7 +70,9 @@
                                 <%= item.experience %>
                             </td>
                             <td>
-                                <%= item.datePosted %>
+                                <% datePostString=JSON.stringify(item.datePosted).slice(1,11) %>
+                                <% datePost=datePostString.split("-").reverse().join("/") %>
+                                <%= datePost %>
                             </td>
                             <td>
                                             <!-- Job Application Form -->
@@ -111,7 +116,7 @@
                     <th>Status</th>
                 </tr>
 
-                    <!-- ##################### Selected Jobs  ######################## -->
+                    <!-- ##################### Applied Jobs  ######################## -->
 
                 <% jobAppliedCandidateList.forEach((item)=>{ %>
             
@@ -133,11 +138,13 @@
                                 <%= item.experience %>
                             </td>
                             <td>
-                                <%= item.datePosted %>
+                                <% datePostString=JSON.stringify(item.datePosted).slice(1,11) %>
+                                <% datePost=datePostString.split("-").reverse().join("/") %>
+                                <%= datePost %>
                             </td>
                             <td>
                                 <% if (JSON.stringify(item.status)=="false" ) { %>
-                                    <button class="btn btn-warning">
+                                    <button class="btn btn-outline-warning">
                                         Pending
                                     </button>
 
@@ -145,14 +152,14 @@
 
                                             <% item.selected.forEach((itemSelected)=>{ %>
                                                 <% if (JSON.stringify(itemSelected) === JSON.stringify(user._id)) { %>
-                                                    <button class="btn btn-success">
+                                                    <button class="btn btn-outline-success">
                                                         Selected
                                                     </button>
                                                 <% } %>
                                             <% }) %>
                                             <% jobRejectedCandidateList.forEach((itemRejected)=>{ %>
                                                 <% if (JSON.stringify(itemRejected)===JSON.stringify(user._id)) { %>
-                                                    <button class="btn btn-danger">
+                                                    <button class="btn btn-outline-danger">
                                                         Rejected
                                                     </button>
                                                 <% } %>
@@ -200,10 +207,12 @@
             <%= item.experience %>
         </td>
         <td>
-            <%= item.datePosted %>
+            <% datePostString=JSON.stringify(item.datePosted).slice(1,11) %>
+            <% datePost=datePostString.split("-").reverse().join("/") %>
+            <%= datePost %>
         </td>
         <td> 
-            <button class="btn btn-success">
+            <button class="btn btn-outline-success">
                 Selected
             </button>
         </td>
@@ -211,7 +220,7 @@
 
     <% }) %>
 
-                <!-- ##################### Rejected Jobs  ######################## -->
+                        <!-- ##################### Rejected Jobs  ######################## -->
 
 <% jobRejectedCandidateList.forEach((item)=>{ %>
 
@@ -233,10 +242,12 @@
             <%= item.experience %>
         </td>
         <td>
-            <%= item.datePosted %>
+            <% datePostString=JSON.stringify(item.datePosted).slice(1,11) %>
+            <% datePost=datePostString.split("-").reverse().join("/") %>
+            <%= datePost %>
         </td>
         <td>
-            <button class="btn btn-danger">
+            <button class="btn btn-outline-danger">
                 Rejected
             </button>
         </td>
@@ -245,12 +256,11 @@
     <% }) %>
 
 
-                    <!-- ##################################################  -->
-
-
+    <!-- ##################################################  -->
             </table>
         </div>
     </div>
+    <!-- ##################################################  -->
 
 
         
@@ -331,11 +341,11 @@
                                     </td>
                                     <td>
                                         <% if (JSON.stringify(item.status) == "false") { %>
-                                            <button class="btn btn-warning">
+                                            <button class="btn btn-outline-warning">
                                                 Pending
                                             </button>
                                         <% } else { %>
-                                            <button class="btn btn-success">
+                                            <button class="btn btn-outline-success">
                                                 Closed
                                             </button>
                                             <% } %>
