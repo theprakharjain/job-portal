@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
-const Job = require('../models/Jobs')
+const Job = require('../models/Jobs');
+const User = require('../models/User');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 // function fetchdata() {
@@ -38,9 +39,26 @@ router.get('/', forwardAuthenticated, async (req, res) => {
 router.get('/dashboard', ensureAuthenticated, async (req, res) => {
 
   try {
+
+    const jobAppliedCandidate = await Job.find({applicant: {$all : [req.user._id]}});
+    const jobRejectedCandidate = await Job.find({rejected: {$all : [req.user._id]}});
+    const jobNotAppliedCandidate = await Job.find({applicant: {$nin : [req.user._id]}});
+    const jobSelectedCandidate = await Job.find({selected: {$all : [req.user._id]}});
+    const jobCreatedEmployer = await Job.find({creator: {$all : [req.user._id]}});
+
+    const Users = await User.find()
     const Jobs = await Job.find()
-    res.render('dashboard', { newJobItems: Jobs, user: req.user })
-    // res.json(Jobs)
+    res.render('dashboard', { 
+      newJobItems: Jobs, 
+      user: req.user, 
+      usersList: Users,
+      jobAppliedCandidateList: jobAppliedCandidate,
+      jobNotAppliedCandidateList: jobNotAppliedCandidate,
+      jobRejectedCandidateList: jobRejectedCandidate,
+      jobSelectedCandidateList: jobSelectedCandidate,
+      jobCreatedEmployerList: jobCreatedEmployer      
+    })
+    // res.json(jobCreatedEmployer)
     
   } catch (err) {
     res.status(500).json({ message: err.message })

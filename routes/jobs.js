@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
     experience: req.body.experience,
     datePosted: req.body.datePosted,
     selected: req.body.selected,
-    applied: req.body.applied
+    status: req.body.status
   })
   try {
     const newJob = await job.save()
@@ -63,8 +63,8 @@ router.patch('/:id', getJob, async (req, res) => {
   if (req.body.selected != null) {
     res.job.selected = req.body.selected
   }
-  if (req.body.applied != null) {
-    res.job.applied = req.body.applied
+  if (req.body.status != null) {
+    res.job.status = req.body.status
   }
   try {
     const updatedJob = await res.job.save()

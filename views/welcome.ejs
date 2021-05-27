@@ -1,6 +1,14 @@
 
 <!-- ########################################################################## -->
+<br>
 
+<a href="/signup">
+<button class="btn btn-light">
+    Login
+</button>
+</a>
+
+<br>
 <br>
 <table class="table table-hover">
   <tr class="table-info">
@@ -18,13 +26,17 @@
     <td><%= item.skills %></td>
     <td> <%= item.jobType %> </td>
     <td> <%= item.experience %> </td>
-    <td> <%= item.datePosted %> </td>
+    <td> 
+        <% datePostString=JSON.stringify(item.datePosted).slice(1,11) %>
+        <% datePost=datePostString.split("-").reverse().join("/") %>
+        <%= datePost %>
+    </td>
     <td>
-      <button class="btn btn-light">
-        <a href="/signup">
-          Apply
-        </a>
-      </button>
+      <a href="/signup">
+        <button class="btn btn-light">
+            Apply
+        </button>
+      </a>
     </td>
   </tr>
   <% }) %>

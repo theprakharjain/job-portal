@@ -25,16 +25,20 @@ const jobSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    selected: {
-        type: Boolean,
-        default: false
-    },
-    applied: {
+    selected: [{
+    type : String
+    }],
+    rejected: [{
+    type : String
+    }],
+    status: {
         type: Boolean,
         default: false
     },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    applicant: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+    applicant: [{
+    type : String
+    }]
 }, {timestamps: true})
 
 

@@ -34,7 +34,7 @@
     </ul>
 
     <div id="myTabContent" class="tab-content">
-        <div class="tab-pane fade" id="openJobs">
+        <div class="tab-pane fade active show" id="openJobs">
     
             <table class="table table-hover">
                 <tr class="table-info">
@@ -45,10 +45,11 @@
                     <th>Experience</th>
                     <th>Date of Post</th>
                 </tr>
-                <% newJobItems.forEach((item)=>{ %>
+                <% jobNotAppliedCandidateList.forEach((item)=>{ %>                   
     
                     <!--  -->
-                    <% if (JSON.stringify(item.selected) == "false" && JSON.stringify(user._id) != JSON.stringify(item.applicant)) { %>
+                    <% if (JSON.stringify(item.status) == "false" ) { %>
+                        
                         <tr>
                             <td>
                                 <%= item.companyName %>
@@ -88,6 +89,8 @@
                                 <!--  -->
     
                                 <% }) %>
+
+                                
             </table>
     
         </div>
@@ -105,11 +108,14 @@
                     <th>Job Type</th>
                     <th>Experience</th>
                     <th>Date of Post</th>
+                    <th>Status</th>
                 </tr>
-                <% newJobItems.forEach((item)=>{ %>
+
+                    <!-- ##################### Selected Jobs  ######################## -->
+
+                <% jobAppliedCandidateList.forEach((item)=>{ %>
             
                     <!--  -->
-                    <% if (JSON.stringify(item.selected)=="false" && JSON.stringify(user._id) === JSON.stringify(item.applicant)) { %>
                         <tr>
                             <td>
                                 <%= item.companyName %>
@@ -130,76 +136,124 @@
                                 <%= item.datePosted %>
                             </td>
                             <td>
-                                <% if (JSON.stringify(item.selected)=="false" ) { %>
+                                <% if (JSON.stringify(item.status)=="false" ) { %>
                                     <button class="btn btn-warning">
                                         Pending
                                     </button>
+
                                     <% } else { %>
-                                        <button class="btn btn-success">
-                                            Closed
-                                        </button>
+
+                                            <% item.selected.forEach((itemSelected)=>{ %>
+                                                <% if (JSON.stringify(itemSelected) === JSON.stringify(user._id)) { %>
+                                                    <button class="btn btn-success">
+                                                        Selected
+                                                    </button>
+                                                <% } %>
+                                            <% }) %>
+                                            <% jobRejectedCandidateList.forEach((itemRejected)=>{ %>
+                                                <% if (JSON.stringify(itemRejected)===JSON.stringify(user._id)) { %>
+                                                    <button class="btn btn-danger">
+                                                        Rejected
+                                                    </button>
+                                                <% } %>
+                                            <% }) %>
                                         <% } %>
-            
-                                            <!-- Job Application Delete Form -->
-                                            <form action="/employer/application/delete" method="POST">
-                                                <input type="hidden" id="itemIdAppDel" name="itemIdAppDel" value="<%= item._id %>">
-                                                <input type="hidden" id="userIdAppDel" name="userIdAppDel" value="<%= user._id %>">
-                                                <button type="submit" class="btn btn-danger" style="margin: 10dp;"
-                                                    data-toggle="tooltip" data-placement="right" title="Delete">
-                                                    X
-                                                </button>
-                                            </form>
-                                            <!-- Job Application Delete Form -->
-            
+                                        
+                            </td>
+                            <td>
+
+                                <!-- Job Application Delete Form -->
+                                <form action="/employer/application/delete" method="POST">
+                                    <input type="hidden" id="itemIdAppDel" name="itemIdAppDel" value="<%= item._id %>">
+                                    <input type="hidden" id="userIdAppDel" name="userIdAppDel" value="<%= user._id %>">
+                                    <button type="submit" class="btn btn-danger" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
+                                        title="Delete">
+                                        X
+                                    </button>
+                                </form>
+                                <!-- Job Application Delete Form -->
+
                             </td>
                         </tr>
-                        <% } else { %>
-            
-                            <% } %>
                                 <!--  -->
-            
-                                <% }) %>
+                            <% }) %>
+
+
+                                <!-- ##################### Selected Jobs  ######################## -->
+<% jobSelectedCandidateList.forEach((item)=>{ %>
+
+    <!--  -->
+    <tr>
+        <td>
+            <%= item.companyName %>
+        </td>
+        <td>
+            <%= item.jobRole %>
+        </td>
+        <td>
+            <%= item.skills %>
+        </td>
+        <td>
+            <%= item.jobType %>
+        </td>
+        <td>
+            <%= item.experience %>
+        </td>
+        <td>
+            <%= item.datePosted %>
+        </td>
+        <td> 
+            <button class="btn btn-success">
+                Selected
+            </button>
+        </td>
+    </tr>
+
+    <% }) %>
+
+                <!-- ##################### Rejected Jobs  ######################## -->
+
+<% jobRejectedCandidateList.forEach((item)=>{ %>
+
+    <!--  -->
+    <tr>
+        <td>
+            <%= item.companyName %>
+        </td>
+        <td>
+            <%= item.jobRole %>
+        </td>
+        <td>
+            <%= item.skills %>
+        </td>
+        <td>
+            <%= item.jobType %>
+        </td>
+        <td>
+            <%= item.experience %>
+        </td>
+        <td>
+            <%= item.datePosted %>
+        </td>
+        <td>
+            <button class="btn btn-danger">
+                Rejected
+            </button>
+        </td>
+    </tr>
+
+    <% }) %>
+
+
+                    <!-- ##################################################  -->
+
+
             </table>
         </div>
     </div>
 
-    <!-- <table class="table table-hover">
-        <tr class="table-info">
-            <th>Company Name</th>
-            <th>Job Role</th>
-            <th>Skills</th>
-            <th>Job Type</th>
-            <th>Experience</th>
-            <th>Date of Post</th>
-        </tr>
-        <% newJobItems.forEach((item)=>{ %>
-            <tr>
-                <td>
-                    <%= item.companyName %>
-                </td>
-                <td>
-                    <%= item.jobRole %>
-                </td>
-                <td>
-                    <%= item.skills %>
-                </td>
-                <td>
-                    <%= item.jobType %>
-                </td>
-                <td>
-                    <%= item.experience %>
-                </td>
-                <td>
-                    <%= item.datePosted %>
-                </td>
-                <td>
-                    <button class="btn btn-light">
-                            Apply
-                    </button>
-                </td>
-            </tr>
-            <% }) %>
-    </table> -->
+
+        
 
 <!-- ########################### Employer ############################################ -->
 
@@ -231,13 +285,14 @@
                 <a class="nav-link " data-toggle="tab" href="#createJob">Create Job</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " data-toggle="tab" href="#">Disabled</a>
+                <a class="nav-link " data-toggle="tab" href="#applicants">Applicants</a>
             </li>
         </ul>
 
         <!-- ###################### Employer Pending Job Tab ############################### -->
         <div id="myTabContent" class="tab-content">
-            <div class="tab-pane fade" id="pendingJob">
+
+            <div class="tab-pane fade active show" id="pendingJob">
                
                 <table class="table table-hover">
                     <tr class="table-info">
@@ -247,11 +302,12 @@
                         <th>Job Type</th>
                         <th>Experience</th>
                         <th>Date of Post</th>
+                        <th>Status</th>
                     </tr>
-                    <% newJobItems.forEach((item)=>{ %>
 
+                    <% jobCreatedEmployerList.forEach((item)=>{ %>
+                        <% if (JSON.stringify(item.status)=="false" ) { %>
 <!--  -->
-                        <% if (JSON.stringify(user._id) === JSON.stringify(item.creator)) { %>
                                 <tr>
                                     <td>
                                         <%= item.companyName %>
@@ -269,19 +325,22 @@
                                         <%= item.experience %>
                                     </td>
                                     <td>
-                                        <%= item.datePosted %>
+                                        <% datePostString = JSON.stringify(item.datePosted).slice(1,11) %>
+                                        <% datePost = datePostString.split("-").reverse().join("/") %>
+                                        <%= datePost %>
                                     </td>
                                     <td>
-                                        <% if (JSON.stringify(item.selected) == "false") { %>
-                                        <button class="btn btn-warning">
-                                            Pending
-                                        </button>
+                                        <% if (JSON.stringify(item.status) == "false") { %>
+                                            <button class="btn btn-warning">
+                                                Pending
+                                            </button>
                                         <% } else { %>
                                             <button class="btn btn-success">
                                                 Closed
                                             </button>
                                             <% } %>
-
+                                    </td>
+                                    <td>
                                             <!-- Job Delete Form -->
                                             <form action="/employer/post/delete" method="POST">
                                             <input type="hidden" id="itemId" name="itemId" value="<%= item._id %>">
@@ -294,21 +353,31 @@
 
                                     </td>
                                 </tr>
-                            <% } else { %>
-                                    
-                                <% } %>
 <!--  -->
-
+                            <% } %>
                         <% }) %>
+                        
+                        
                 </table>
 
+                <% if (JSON.stringify(jobCreatedEmployerList)=="[]" ) { %>
+                    <div class="card bg-secondary mb-3 " style="max-width: 20rem;">
+                        <div class="card-header">NO JOBS CREATED</div>
+                        <div class="card-body">
+                            <h4 class="card-title"></h4>
+                            <p class="card-text">Please go to the the Tab-> "Create Job" to Create job.</p>
+                        </div>
+                    </div>
+                <% } %>
+                
+            
             </div>
 
 
 
 <!-- ###################### Employer Create Job Tab ############################### -->
 
-            <div class="tab-pane fade " id="createJob">
+            <div class="tab-pane fade" id="createJob">
                 <form class = "col-md-9" action="/employer/post" method="POST">
                     <fieldset>
                         <div class="form-group">
@@ -346,6 +415,287 @@
                     </fieldset>
                 </form>
             </div>
+            <br>
+            <br>
+        
+
+                <!-- ###################### Employer Job Applicants Tab ############################### -->
+                
+                    <div class="tab-pane fade" id="applicants">
+                <!--##################################################################################################  -->
+                       
+                <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"></div>
+                                <table class="table table-responsive table-hover">
+                                    <tbody>
+                                    <thead>
+                                        <tr class="table-info">
+                                            <th>Company Name</th>
+                                            <th>Job Role</th>
+                                            <th>Skills</th>
+                                            <th>Job Type</th>
+                                            <th>Experience</th>
+                                            <th>Date of Post</th>
+                                            <th>Status</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </tbody>
+                                        <% jobCreatedEmployerList.forEach((item)=>{ %>
+<!--To toggle from the table row -->            <tr  id=<%= item.companyName %> >  
+                                                <td>
+                                                    <%= item.companyName %>
+                                                </td>
+                                                <td>
+                                                    <%= item.jobRole %>
+                                                </td>
+                                                <td>
+                                                    <%= item.skills %>
+                                                </td>
+                                                <td>
+                                                    <%= item.jobType %>
+                                                </td>
+                                                <td>
+                                                    <%= item.experience %>
+                                                </td>
+                                                <td>
+                                                    <% datePostString=JSON.stringify(item.datePosted).slice(1,11) %>
+                                                    <% datePost=datePostString.split("-").reverse().join("/") %>
+                                                    <%= datePost %>
+                                                </td>
+                                                <td>
+                                                    <% if (JSON.stringify(item.status)=="false" ) { %>
+                                                        <button class="btn btn-outline-warning">
+                                                            Pending
+                                                        </button>
+                                                        <% } else { %>
+                                                        <button class="btn btn-outline-success">
+                                                            Closed
+                                                        </button>
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-info" data-toggle="collapse" data-target=.<%= item.companyName %> >Applications Received</button>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-info" data-toggle = "modal" 
+                                                    data-target=#<%= item.companyName %> >Selected Candidates</button>
+                                                </td>
+                                                <td>
+                                                    <!-- Application Close Form -->
+                                                    <form action="/employer/post/close" method="POST">
+                                                        <input type="hidden" id="itemIdClose" name="itemIdClose" value="<%= item._id %>">
+                                                        <button type="submit" class="btn btn-success" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
+                                                            title="Close Application">
+                                                            <span>&#10003;</span>
+                                                        </button>
+                                                    </form>
+                                                    <!-- Application Close Form -->
+                                                </td>
+                                                <td>
+                                                    <!-- Application Delete Form -->
+                                                    <form action="/employer/post/delete" method="POST">
+                                                        <input type="hidden" id="itemId" name="itemId" value="<%= item._id %>">
+                                                        <button type="submit" class="btn btn-danger" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
+                                                            title="Delete">
+                                                            X
+                                                        </button>
+                                                    </form>
+                                                    <!-- Application Delete Form -->
+
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr class="collapse <%= item.companyName %>">
+                                                <td colspan="999">
+                                                    <div>
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Applicant</th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                </tr>
+
+                                                                <% if (JSON.stringify(item.applicant)=="[]" ) { %>
+                                                                    <div class="card bg-secondary mb-3 " style="max-width: 20rem;">
+                                                                        <div class="card-header">NO APPLICATION RECEIVED</div>
+                                                                        <div class="card-body">
+                                                                            <h4 class="card-title"></h4>
+                                                                            <p class="card-text"> Candidates have not applied for the job. Please wait for the applications.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                <% } %>
+
+                                                            </thead>
+                                                            
+                                                            <% item.applicant.forEach((arrayItem)=>{ %>
+                                                                <% usersList.forEach((userItem)=>{ %>
+                                                                    <% if (JSON.stringify(userItem._id)===JSON.stringify(arrayItem)) { %>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <%= userItem.name %>
+                                                                                </td>
+                                                                                <td style="text-align: end;">
+                                                                                    <!-- Application Accept Form -->
+                                                                                    <form action="/employer/post/select" method="POST">
+                                                                                        <input type="hidden" id="itemIdSelect" name="itemIdSelect" value="<%= item._id %>">
+                                                                                        <input type="hidden" id="userIdSelect" name="userIdSelect" value="<%= userItem._id %>">
+                                                                                        <button type="submit" class="btn btn-info" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
+                                                                                            title="Select">
+                                                                                            Select
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    <!-- Application Accept Form -->
+                                                                                </td>
+                                                                                <td>
+                                                                                    <!-- Application Reject Form -->
+                                                                                    <form action="/employer/post/reject" method="POST">
+                                                                                        <input type="hidden" id="itemIdReject" name="itemIdReject" value="<%= item._id %>">
+                                                                                        <input type="hidden" id="userIdReject" name="userIdReject" value="<%= userItem._id %>">
+                                                                                        <button type="submit" class="btn btn-danger" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
+                                                                                            title="Select">
+                                                                                            Reject
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    <!-- Application Reject Form -->
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                        <% } %>
+                                                                     <% }) %>
+                                                                <% }) %>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+<!-- ############################### Modal Selected Candidates ############################################ -->
+
+
+
+<!-- Button trigger modal -->
+<!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id=<%= item.companyName %> tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Selected Candidates</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body flex-direction: column">
+
+                    <% if (JSON.stringify(item.selected)== "[]") { %>
+                            <div class="card bg-secondary mb-3 " style="max-width: 20rem;">
+                                <div class="card-header">NO APPLICATION SELECTED</div>
+                                <div class="card-body">
+                                    <h4 class="card-title"></h4>
+                                    <p class="card-text"> Please click the Tab-> "Application Received" and select the matching candidate to the requirements </p>
+                                </div>
+                            </div>
+                    <% } %>
+                
+                    <% item.selected.forEach((arrayItem)=>{ %>
+                        <% usersList.forEach((userItem)=>{ %>
+                            <% if (JSON.stringify(userItem._id)===JSON.stringify(arrayItem)) { %>
+                            <button class="btn btn-outline-info" style="width: 60%; margin: 10px">
+                            <%= userItem.name %>
+                            </button>
+                            <% } %>
+                        <% })%>
+                    <% })%>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
         </div>
+    </div>
+</div>
+
+
+
+
+<!-- ############################### Modal Selected Candidates ############################################ -->
+                                    <% }) %>
+                            </div>
+                        </div>
+    
+<!-- ##################################################################################### -->
+
+<!-- <div class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="overflow-y: scroll; max-height:85%;  margin-top: 50px; margin-bottom:50px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">ASDFASDFASDFASDF</h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">ASDFASDFASDFASDF</div>
+        </div>
+    </div>
+</div> -->
+
+<!-- <div class="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<!-- Button trigger modal -->
+<!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<!-- ##################################################################################### -->
+
+
+                
+                    </div>
+                </div>
 
         <% } %>
