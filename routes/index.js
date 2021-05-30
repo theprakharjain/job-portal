@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
-const Job = require('../models/Jobs');
-const User = require('../models/User');
+const mongoose = require('mongoose');
+const Job = mongoose.model('Jobs');
+const User = mongoose.model('User');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 // function fetchdata() {

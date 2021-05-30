@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
-const Job = require('../models/Jobs')
+const Job = mongoose.model('Jobs');
 
 // Getting all
 router.get('/', ensureAuthenticated, async (req, res) => {

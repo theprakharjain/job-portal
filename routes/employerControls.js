@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
+const mongoose = require('mongoose');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
-const Job = require('../models/Jobs')
+const Job = mongoose.model('Jobs')
 
 
 // router.get('/', ensureAuthenticated, (req, res) => {res.render('controlsEmp')});

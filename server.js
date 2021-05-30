@@ -7,6 +7,10 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 
+// Adding the model routes
+require('./models/jobs');
+require('./models/user');
+
 const app = express()
 
 // Passport Config
