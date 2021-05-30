@@ -63,6 +63,10 @@ app.use(function(req, res, next) {
   next();
 });
 
+// Route to signup
+const signupRouter = require('./routes/signup')
+app.use('/signup', signupRouter) //localhost:3000/signup
+
 // Route to jobs API
 const jobsRouter = require('./routes/jobs')
 app.use('/jobs', jobsRouter) //localhost:3000/jobs
@@ -74,10 +78,6 @@ app.use('/', homeRouter) //localhost:3000/
 // Route to user
 const userRouter = require('./routes/users')
 app.use('/users', userRouter) //localhost:3000/users
-
-// Route to signup
-const signupRouter = require('./routes/signup')
-app.use('/signup', signupRouter) //localhost:3000/signup
 
 // Route to candidate controls
 const candidateRouter = require('./routes/candidateControls')
