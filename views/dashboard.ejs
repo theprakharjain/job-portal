@@ -12,7 +12,7 @@
     
         <div class="d-flex justify-content-end align-items-center">
             <!-- <a href="#" class="btn btn-secondary" style="margin-right: 10px;">Applied</a> -->
-            <a href="/users/logout" class="btn btn-secondary">Logout</a>
+            <a href="users/logout" class="btn btn-secondary">Logout</a>
         </div>
     </div>
 
@@ -76,7 +76,7 @@
                             </td>
                             <td>
                                             <!-- Job Application Form -->
-                                            <form action="/employer/application" method="POST">
+                                            <form action="employer/application" method="POST">
                                                 <input type="hidden" id="itemIdApp" name="itemIdApp" value="<%= item._id %>">
                                                 <input type="hidden" id="userIdApp" name="userIdApp" value="<%= user._id %>">
                                                 <button type="submit" class="btn btn-info" style="margin: 10dp;"
@@ -170,7 +170,7 @@
                             <td>
 
                                 <!-- Job Application Delete Form -->
-                                <form action="/employer/application/delete" method="POST">
+                                <form action="employer/application/delete" method="POST">
                                     <input type="hidden" id="itemIdAppDel" name="itemIdAppDel" value="<%= item._id %>">
                                     <input type="hidden" id="userIdAppDel" name="userIdAppDel" value="<%= user._id %>">
                                     <button type="submit" class="btn btn-danger" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
@@ -277,8 +277,8 @@
             </div>
         
             <div class="d-flex justify-content-end align-items-center">
-                <!-- <a href="/employer" class="btn btn-secondary" style="margin-right: 10px;">Create Job</a> -->
-                <a href="/users/logout" class="btn btn-secondary">Logout</a>
+                <!-- <a href="employer" class="btn btn-secondary" style="margin-right: 10px;">Create Job</a> -->
+                <a href="users/logout" class="btn btn-secondary">Logout</a>
             </div>
         </div>
 
@@ -352,7 +352,7 @@
                                     </td>
                                     <td>
                                             <!-- Job Delete Form -->
-                                            <form action="/employer/post/delete" method="POST">
+                                            <form action="employer/post/delete" method="POST">
                                             <input type="hidden" id="itemId" name="itemId" value="<%= item._id %>">
                                             <button type="submit" class="btn btn-danger" style="margin: 10dp;"
                                             data-toggle="tooltip" data-placement="right" title="Delete">
@@ -388,7 +388,7 @@
 <!-- ###################### Employer Create Job Tab ############################### -->
 
             <div class="tab-pane fade" id="createJob">
-                <form class = "col-md-9" action="/employer/post" method="POST">
+                <form class = "col-md-9" action="employer/post" method="POST">
                     <fieldset>
                         <div class="form-group">
                             <label for="companyName" class="form-label mt-4">Company Name</label>
@@ -495,7 +495,7 @@
                                                 </td>
                                                 <td>
                                                     <!-- Application Close Form -->
-                                                    <form action="/employer/post/close" method="POST">
+                                                    <form action="employer/post/close" method="POST">
                                                         <input type="hidden" id="itemIdClose" name="itemIdClose" value="<%= item._id %>">
                                                         <button type="submit" class="btn btn-success" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
                                                             title="Close Application">
@@ -506,7 +506,7 @@
                                                 </td>
                                                 <td>
                                                     <!-- Application Delete Form -->
-                                                    <form action="/employer/post/delete" method="POST">
+                                                    <form action="employer/post/delete" method="POST">
                                                         <input type="hidden" id="itemId" name="itemId" value="<%= item._id %>">
                                                         <button type="submit" class="btn btn-danger" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
                                                             title="Delete">
@@ -551,7 +551,7 @@
                                                                                 </td>
                                                                                 <td style="text-align: end;">
                                                                                     <!-- Application Accept Form -->
-                                                                                    <form action="/employer/post/select" method="POST">
+                                                                                    <form action="employer/post/select" method="POST">
                                                                                         <input type="hidden" id="itemIdSelect" name="itemIdSelect" value="<%= item._id %>">
                                                                                         <input type="hidden" id="userIdSelect" name="userIdSelect" value="<%= userItem._id %>">
                                                                                         <button type="submit" class="btn btn-info" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
@@ -563,7 +563,7 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <!-- Application Reject Form -->
-                                                                                    <form action="/employer/post/reject" method="POST">
+                                                                                    <form action="employer/post/reject" method="POST">
                                                                                         <input type="hidden" id="itemIdReject" name="itemIdReject" value="<%= item._id %>">
                                                                                         <input type="hidden" id="userIdReject" name="userIdReject" value="<%= userItem._id %>">
                                                                                         <button type="submit" class="btn btn-danger" style="margin: 10dp;" data-toggle="tooltip" data-placement="right"
